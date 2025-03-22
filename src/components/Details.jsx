@@ -47,7 +47,7 @@ const Details = () => {
     const orderData = { ...address, cart: orderDetails.cart, totalPrice: orderDetails.totalPrice };
 
     try {
-      const response = await fetch(`${api}/api/orders`, {
+      const response = await fetch("https://riceshop-pgp7.onrender.com/orders", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(orderData),

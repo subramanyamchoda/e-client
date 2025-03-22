@@ -5,6 +5,8 @@ import Home from './components/Home';
 import Cart from './components/cart';
 import Details from './components/Details';
 import OrderConfirmation from './components/OrderConfirmation';
+import Login from './components/Login';
+import Items from './components/Items';
 const App = () => {
   return (
       <Router>
@@ -14,6 +16,8 @@ const App = () => {
             <Route path='/cart' element={<Cart/>}/>
             <Route path='/address' element={<Details/>}/>
             <Route path='/order' element={<OrderConfirmation/>}/>
+            <Route path='/Admin' element={<Login/>}/>
+            <Route path='/items' element={<Items/>}/>
             
           </Routes>
       

@@ -110,22 +110,26 @@ const Items = () => {
         </div>
       )}
 
-<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 mt-2">
-  {products.map((product) => (
-    <div key={product._id} className="bg-gray-100 shadow-lg rounded-lg overflow-hidden p-5 flex flex-col items-center">
-      <img src={`https://riceshop-pgp7.onrender.com/uploads/${product.image}`} alt={product.name} className="w-80 h-80 object-cover rounded-lg" />
-      <div className="mt-4 text-center">
-        <h2 className="text-xl font-semibold text-gray-900">{product.name}</h2>
-        <p className="mt-2 text-lg text-gray-700">${product.price}</p>
-        <p className="mt-2 text-sm text-gray-500">High-quality product with the best pricing.</p>
-        <div className="flex justify-between gap-3 mt-4">
-          <button onClick={() => handleEdit(product)} className="px-4 py-2 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600 transition-all text-lg shadow-md">Edit</button>
-          <button onClick={() => handleDelete(product._id)} className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-all text-lg shadow-md">Delete</button>
-        </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 mt-2">
+        {products.map((product) => (
+          <div key={product._id} className="bg-gray-100 shadow-lg rounded-lg overflow-hidden p-5 flex flex-col items-center">
+            <img src={`https://riceshop-pgp7.onrender.com/uploads/${product.image}`} alt={product.name} className="w-80 h-80 object-cover rounded-lg" />
+            <div className="mt-4 text-center">
+              <h2 className="text-xl font-semibold text-gray-900">{product.name}</h2>
+              <p className="mt-2 text-lg text-gray-700">₹{product.price}</p>
+              <p className="mt-2 text-sm text-gray-500">{product.description}</p>
+              <div className="flex justify-between gap-3 mt-4">
+                <button onClick={() => handleEdit(product)} className="px-4 py-2 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600 transition-all text-lg shadow-md">
+                  Edit
+                </button>
+                <button onClick={() => handleDelete(product._id)} className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-all text-lg shadow-md">
+                  Delete
+                </button>
+              </div>
+            </div>
+          </div>
+        ))}
       </div>
-    </div>
-  ))}
-</div>
     </div>
   );
 };

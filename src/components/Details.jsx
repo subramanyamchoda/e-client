@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { io } from "socket.io-client";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { api } from "./data";
-const socket = io("http://localhost:5000");
 
 const Details = () => {
   const [address, setAddress] = useState({
@@ -28,14 +26,7 @@ const Details = () => {
       setAddress(storedAddress);
       setIsAddressSaved(true);
     }
-
-    socket.on("orderSuccess", (data) => {
-      toast.success(data.message);
-      navigate("/order");
-    });
-
-    return () => socket.off("orderSuccess");
-  }, [navigate]);
+  }, []);
 
   const handleChange = (e) => setAddress({ ...address, [e.target.name]: e.target.value });
 
@@ -73,21 +64,26 @@ const Details = () => {
           <div className="lg:w-1/2 bg-gray-100 p-6 rounded-lg shadow-lg">
             <h2 className="text-xl font-bold mb-4">Your Order</h2>
             {orderDetails.cart.map((item) => (
-              <div key={item.id} className="flex items-center border-b py-2">
-                <img src={item.img} alt={item.name} className="w-16 h-16 object-cover rounded mr-3" />
+              <div key={item._id} className="flex items-center border-b py-2">
+                <img
+                  src={`${api}/uploads/${item.image}`}
+                  alt={item.name}
+                  className="w-16 h-16 object-cover rounded mr-3"
+                  onError={(e) => (e.target.src = "/placeholder-image.png")}
+                />
                 <div>
                   <p className="text-gray-800 font-medium">{item.name}</p>
-                  <p className="text-gray-500">Qty: {item.quantity} - ${(item.price * item.quantity).toFixed(2)}</p>
+                  <p className="text-gray-500">Qty: {item.quantity} - ₹{(item.price * item.quantity).toFixed(2)}</p>
                 </div>
               </div>
             ))}
-            <h2 className="text-lg font-bold mt-4">Total: ${orderDetails.totalPrice.toFixed(2)}</h2>
+            <h2 className="text-lg font-bold mt-4">Total: ₹{orderDetails.totalPrice.toFixed(2)}</h2>
           </div>
 
           <div className="lg:w-1/2 bg-white p-6 rounded-lg shadow-lg">
-            <h2 className="text-xl font-bold mb-4 text-center">Enter Your Address</h2>
+            <h2 className="text-xl font-bold mb-4 text-center">Enter Your Address <br />(This order is available only for people near Ongole.)</h2>
             <form onSubmit={handleSubmit}>
-              {["name", "phone", "email", "street", "city"].map((field) => (
+              {["name", "phone", "email", "street"].map((field) => (
                 <input
                   key={field}
                   type="text"
@@ -100,6 +96,16 @@ const Details = () => {
                   className="w-full p-2 mb-3 border border-gray-300 rounded"
                 />
               ))}
+              <input
+                type="text"
+                name="city"
+                placeholder="Door No"
+                value={address.city}
+                onChange={handleChange}
+                required
+                disabled={isAddressSaved}
+                className="w-full p-2 mb-3 border border-gray-300 rounded"
+              />
               <button type="submit" className="w-full bg-green-500 text-white py-2 rounded-lg hover:bg-green-600">
                 Proceed to Order
               </button>

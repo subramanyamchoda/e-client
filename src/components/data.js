@@ -1,1 +1,2 @@
-export const api="https://riceshop-pgp7.onrender.com/"
+export const api = "https://riceshop-pgp7.onrender.com";
+

@@ -12,16 +12,16 @@ const Cart = () => {
     setCart(storedCart);
   }, []);
 
-  const updateQuantity = (id, amount) => {
+  const updateQuantity = (productId, amount) => {
     const updatedCart = cart.map((item) =>
-      item.id === id ? { ...item, quantity: Math.max(1, item.quantity + amount) } : item
+      item._id === productId ? { ...item, quantity: Math.max(1, item.quantity + amount) } : item
     );
     setCart(updatedCart);
     localStorage.setItem("cart", JSON.stringify(updatedCart));
   };
 
-  const removeItem = (id) => {
-    const updatedCart = cart.filter((item) => item.id !== id);
+  const removeItem = (productId) => {
+    const updatedCart = cart.filter((item) => item._id !== productId);
     setCart(updatedCart);
     localStorage.setItem("cart", JSON.stringify(updatedCart));
     toast.info("Item removed from cart!");
@@ -46,30 +46,34 @@ const Cart = () => {
         <div className="flex flex-wrap justify-center -m-4">
           {cart.length > 0 ? (
             cart.map((item) => (
-              <div key={item.id} className="lg:w-1/3 md:w-1/2 p-4 w-full flex flex-col items-center">
+              <div key={item._id} className="lg:w-1/3 md:w-1/2 p-4 w-full flex flex-col items-center">
                 <div className="block relative h-48 rounded overflow-hidden">
-                  <img alt="ecommerce" className="object-cover object-center h-full block" src={item.img} />
+                  <img
+                    alt="product"
+                    className="object-cover object-center h-full block"
+                    src={`https://riceshop-pgp7.onrender.com/uploads/${item.image}`}
+                  />
                 </div>
                 <div className="mt-4 text-center">
                   <h2 className="text-gray-900 title-font text-lg font-medium">{item.name}</h2>
-                  <p className="mt-1">${(item.price * item.quantity).toFixed(2)}</p>
+                  <p className="mt-1">₹{(item.price * item.quantity).toFixed(2)}</p>
                   <div className="flex items-center justify-center mt-2">
                     <button
-                      onClick={() => updateQuantity(item.id, -1)}
+                      onClick={() => updateQuantity(item._id, -1)}
                       className="px-3 py-1 bg-gray-300 rounded-l hover:bg-gray-400"
                     >
                       -
                     </button>
                     <span className="px-4 py-1 bg-gray-100">{item.quantity}</span>
                     <button
-                      onClick={() => updateQuantity(item.id, 1)}
+                      onClick={() => updateQuantity(item._id, 1)}
                       className="px-3 py-1 bg-gray-300 rounded-r hover:bg-gray-400"
                     >
                       +
                     </button>
                   </div>
                   <button
-                    onClick={() => removeItem(item.id)}
+                    onClick={() => removeItem(item._id)}
                     className="mt-2 px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600"
                   >
                     Remove
@@ -83,7 +87,7 @@ const Cart = () => {
         </div>
         {cart.length > 0 && (
           <div className="text-center mt-6">
-            <h2 className="text-xl font-bold">Total: ${totalPrice.toFixed(2)}</h2>
+            <h2 className="text-xl font-bold">Total: ₹{totalPrice.toFixed(2)}</h2>
             <button
               onClick={handleBuyNow}
               className="mt-4 px-6 py-3 bg-green-500 text-white text-lg rounded-lg hover:bg-green-600"
